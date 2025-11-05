@@ -1,0 +1,11 @@
+[package]
+name = "test-goreleaser-rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.51", features = ["derive"] }
+
+[target.'cfg(windows)'.dependencies]
+
+[target.'cfg(unix)'.dependencies]
