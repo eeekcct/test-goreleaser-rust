@@ -72,6 +72,7 @@ signs:
     output: true
 
 release:
+  draft: true
   footer: >-
 
     ---
