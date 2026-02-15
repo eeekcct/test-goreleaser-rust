@@ -5,7 +5,7 @@ on:
       - "v*"
 jobs:
   release:
-    uses: eeekcct/goreleaser-rust-workflow/.github/workflows/release.yml@89dfb7d1b7a6bbe9ecde0062510d6b3ae6d35bf9
+    uses: eeekcct/goreleaser-rust-workflow/.github/workflows/release.yml@main
     permissions:
       contents: write
       id-token: write
