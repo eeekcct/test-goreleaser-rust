@@ -6,8 +6,8 @@ on:
 jobs:
   release:
     uses: eeekcct/goreleaser-rust-workflow/.github/workflows/release.yml@c5097af3a6c1edeb39e2135181041e3863499f63
-		with:
-			third_party_licenses: true
+    with:
+      third_party_licenses: true
     permissions:
       contents: write
       id-token: write
