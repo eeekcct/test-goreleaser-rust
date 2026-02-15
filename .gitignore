@@ -1,5 +1,5 @@
 /target
 # Added by goreleaser init:
-dist/
+dist
 .intentionally-empty-file.o
-target/
+third_party_licenses
