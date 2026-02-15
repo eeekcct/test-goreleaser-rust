@@ -5,7 +5,7 @@ on:
       - "v*"
 jobs:
   release:
-    uses: eeekcct/goreleaser-rust-workflow/.github/workflows/release.yml@2847aa77997b39a18bacc162d2113165d272a3ee
+    uses: eeekcct/goreleaser-rust-workflow/.github/workflows/release.yml@d8e7ff9b6861e5154344eebfcd0ad0370491a28d
     with:
       third_party_licenses: true
       license_check: true
