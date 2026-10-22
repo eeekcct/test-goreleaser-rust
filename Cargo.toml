@@ -6,5 +6,5 @@ license = "MIT"
 
 [dependencies]
 clap = { version = "4.5.51", features = ["derive"] }
-git2 = { version = "0.20.2", default-features = false }
+git2 = { version = "0.21.0", default-features = false }
 chrono = "0.4"

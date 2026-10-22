@@ -43,13 +43,13 @@ fn show_repo_info(path: &PathBuf) -> Result<(), git2::Error> {
 
     // Get HEAD
     let head = repo.head()?;
-    if let Some(name) = head.shorthand() {
+    if let Ok(name) = head.shorthand() {
         println!("Current branch: {}", name);
     }
 
     // Get remote
     if let Ok(remote) = repo.find_remote("origin") {
-        if let Some(url) = remote.url() {
+        if let Ok(url) = remote.url() {
             println!("Remote URL: {}", url);
         }
     }
@@ -105,7 +105,7 @@ fn show_log(path: &PathBuf, count: usize) -> Result<(), git2::Error> {
 
         println!("\nCommit: {}", oid);
 
-        if let Some(author) = commit.author().name() {
+        if let Ok(author) = commit.author().name() {
             println!("Author: {}", author);
         }
 
@@ -117,7 +117,7 @@ fn show_log(path: &PathBuf, count: usize) -> Result<(), git2::Error> {
                 .unwrap_or_else(|| "Invalid date".to_string())
         );
 
-        if let Some(message) = commit.message() {
+        if let Ok(message) = commit.message() {
             println!("Message: {}", message.lines().next().unwrap_or(""));
         }
     }
@@ -137,5 +137,42 @@ fn main() {
     if let Err(e) = result {
         eprintln!("Error: {}", e);
         std::process::exit(1);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn repository_commands_work_with_git2_021() {
+        let unique = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let path =
+            std::env::temp_dir().join(format!("gitinfo-test-{}-{unique}", std::process::id()));
+        {
+            let repo = Repository::init(&path).unwrap();
+            let signature = git2::Signature::now("Test", "test@example.invalid").unwrap();
+            let tree_id = repo.index().unwrap().write_tree().unwrap();
+            let tree = repo.find_tree(tree_id).unwrap();
+            repo.commit(
+                Some("HEAD"),
+                &signature,
+                &signature,
+                "Initial test commit",
+                &tree,
+                &[],
+            )
+            .unwrap();
+            repo.remote("origin", "https://github.com/example/example.git")
+                .unwrap();
+
+            assert!(show_repo_info(&path).is_ok());
+            assert!(list_branches(&path).is_ok());
+            assert!(show_log(&path, 1).is_ok());
+        }
+        std::fs::remove_dir_all(path).unwrap();
     }
 }
