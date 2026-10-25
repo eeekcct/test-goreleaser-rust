@@ -57,6 +57,9 @@ changelog:
       - "^docs:"
       - "^test:"
 
+source:
+  enabled: true
+
 sboms:
   - id: archive
     artifacts: archive
